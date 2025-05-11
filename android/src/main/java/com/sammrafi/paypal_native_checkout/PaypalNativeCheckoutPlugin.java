@@ -166,6 +166,7 @@ public class PaypalNativeCheckoutPlugin extends FlutterRegistrarResponder
         String purchaseUnitsStr = call.argument("purchaseUnits");
         String userActionStr = call.argument("userAction");
         String shippingPreferenceStr = call.argument("shippingPreference");
+        String intent = call.argument("intent");
         UserAction userAction = (new UserActionHelper()).getEnumFromString(userActionStr);
         ShippingPreference shippingPreference = (new ShippingPreferenceHelper()).getEnumFromString(shippingPreferenceStr);
 
@@ -231,7 +232,7 @@ public class PaypalNativeCheckoutPlugin extends FlutterRegistrarResponder
 
 //                        AUTHORIZE
                         OrderRequest order = new OrderRequest(
-                                OrderIntent.CAPTURE,
+                            intent.equals("AUTHORIZE") ? OrderIntent.AUTHORIZE : OrderIntent.CAPTURE,
                                 new AppContext.Builder().userAction(userAction).shippingPreference(shippingPreference).build(),
                                 purchaseUnits);
 

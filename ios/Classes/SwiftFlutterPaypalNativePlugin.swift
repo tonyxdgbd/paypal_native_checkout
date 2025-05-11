@@ -116,9 +116,10 @@ public class SwiftPaypalNativeCheckoutPlugin: NSObject, FlutterPlugin {
         let purchaseUnitsStr = args["purchaseUnits"] as! String
         let fullNameStr = args["fullName"] as? String
         let userActionStr = args["userAction"] as! String
+        let intent = (args["intent"] as? String)?.uppercased() ?? "CAPTURE"
         let shippingPreferenceStr = args["shippingPreference"] as! String
         let userAction = userActionFromString(userActionStr)
-        
+        let orderIntent: OrderIntent = (intent == "AUTHORIZE") ? .authorize : .capture
         //shipping prefersence
         var shippingPreference: PayPalCheckout.OrderApplicationContext.ShippingPreference = .noShipping
             switch shippingPreferenceStr {
@@ -175,7 +176,7 @@ public class SwiftPaypalNativeCheckoutPlugin: NSObject, FlutterPlugin {
         Checkout.start(
                 createOrder: { action in
                     let order = OrderRequest(
-                            intent: .capture,
+                            intent: orderIntent,
                             purchaseUnits: purchaseUnits,
                             applicationContext: OrderApplicationContext(shippingPreference: shippingPreference, userAction: userAction)
                     )

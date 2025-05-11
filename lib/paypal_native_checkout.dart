@@ -113,6 +113,7 @@ class PaypalNativeCheckout {
         FPayPalShippingPreference.getFromFile,
     Map<String, dynamic>? address,
     String? fullName,
+    String intent = "CAPTURE",
   }) async {
     if (!_initiated) {
       throw Exception(
@@ -131,7 +132,8 @@ class PaypalNativeCheckout {
       ),
       "shippingPreference":
           FPayPalShippingPreferenceHelper.convertFromEnumToString(
-              shippingPreference)
+              shippingPreference),
+      "intent": intent,
     };
 
     if (address != null) {
